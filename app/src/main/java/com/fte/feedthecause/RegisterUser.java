@@ -152,7 +152,10 @@ public class RegisterUser extends AppCompatActivity {
         //check the passwords to equal each other
         //make sure they arent empty
         //make sure at least 5 in length
+        if(5==5)
         return true;
+        else
+            return false;
     }
 
     private boolean isEmail(String tEmail){
