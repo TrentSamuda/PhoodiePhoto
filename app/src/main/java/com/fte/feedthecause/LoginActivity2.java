@@ -212,7 +212,7 @@ public class LoginActivity2 extends AppCompatActivity {
         }
 
         protected void onPostExecute(String result){
-            if (loginsuccess) {
+            if (result.equals("Sucess!")) {
                 // setContentView(R.layout.login_fail);
                 Controller c = new Controller();
                 c.setUserId(sUsername);
@@ -225,17 +225,7 @@ public class LoginActivity2 extends AppCompatActivity {
 
                 Toast.makeText(getApplicationContext(), "Failed to login" + result,
                         Toast.LENGTH_LONG).show();
-                //dbTools.savepassword(userName, password);
-                //Sharedprefrence is class which is used for storing the data permintely in mobile
-                // un till and unless user uninstall the application from mobile. Here we are saving the data into sharedprefrence
 
-//                SharedPreferences sh= PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
-//                SharedPreferences.Editor edit=sh.edit();
-//                edit.putString("username",userName);
-//                edit.putString("password",password);
-
-                //Intent theIntent = new Intent(getApplication(), ShowAB.class);
-                //startActivity(theIntent);
             }
         }
 

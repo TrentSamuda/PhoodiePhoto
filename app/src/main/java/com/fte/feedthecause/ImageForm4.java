@@ -311,6 +311,7 @@ public class ImageForm4 extends AppCompatActivity {
                 JSONObject postDataParams = new JSONObject();
                 postDataParams.put("title", _title);
                 postDataParams.put("description", _description);
+                _keywords = _keywords.replaceAll(",","@");
                 postDataParams.put("keywords", _keywords);
                 postDataParams.put("ingredients", _ingredients);
                 postDataParams.put("instructions", _instructions);

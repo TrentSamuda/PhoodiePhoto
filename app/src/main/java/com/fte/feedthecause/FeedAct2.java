@@ -61,10 +61,10 @@ public class FeedAct2 extends AppCompatActivity {
             @Override
             protected String doInBackground(String... params) {
 
-                String uri = "http://www.simplifiedcoding.16mb.com/myjson.php";
 
 
-                BufferedReader bufferedReader = null;
+
+
                 try {
                     //URL url = new URL(uri);
                     URL url = new URL("http://foodpickready.co.nf/allpics.php");
@@ -131,20 +131,39 @@ public class FeedAct2 extends AppCompatActivity {
 
     public void parseJSONString(String jString){
         jString = jString.replaceAll("\\[","");
+        jString = jString.replaceAll("\\]","");
         jString = jString.replaceAll("\\{","");
+        jString = jString.replaceAll("\\}","");
+        jString = jString.replaceAll("\"","");
         jString = jString.replaceAll("result","");
         int chop = jString.indexOf(":");
         jString= jString.substring(chop+1);
 
         String hold[] = jString.split(",");
 
-
+        ImageBreakdown me = null;
 
         for(int i=0;i<hold.length;i++){
             String split2[] = hold[i].split(":");
-            String key = split2[0];
-            String value = split2[1];
-            ImageBreakdown me = new ImageBreakdown(getApplicationContext());
+
+            String key="",value="";
+            try {
+                key = split2[0];
+                value = split2[1];
+            }catch (ArrayIndexOutOfBoundsException e) {
+                System.out.println("Array is out of Bounds"+e);
+            }
+
+
+            if(split2.length > 2){
+                value += ":";
+                for(int j=2;j<split2.length;j++)
+                    value += split2[j] + ":";
+            }
+
+            if(key.equals("photo_id")) {
+               me = new ImageBreakdown(getApplicationContext());
+            }
             switch(key){
                 case "title":
                     me.setTitle(value);
@@ -153,14 +172,21 @@ public class FeedAct2 extends AppCompatActivity {
                     me.setDescription(value);
                     break;
                 case "keywords":
+                    value = value.replaceAll("@",",");
                     me.setKeywords(value);
                     break;
                 case "ingredients":
+                    me.setIngredients(value);
+                    break;
+                case "instructions":
+                    me.setInstructions(value);
                     break;
                 case "other":
                     me.setOther(value);
                     break;
+                case "\"date_created\"":
                 case "date_created":
+
                     me.setTimePosted(value);
                     break;
                 case "owner":
@@ -176,7 +202,8 @@ public class FeedAct2 extends AppCompatActivity {
                     me.setLikeCounter(Integer.parseInt(value));
                     break;
             }
-            imageHolder.add(me);
+            if(key.equals("likes"))
+                imageHolder.add(me);
         }
 
     }
