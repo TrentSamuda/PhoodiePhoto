@@ -172,6 +172,7 @@ public class FeedAct2 extends AppCompatActivity {
                     me.setDescription(value);
                     break;
                 case "keywords":
+                    //puts the comas back when its safe
                     value = value.replaceAll("@",",");
                     me.setKeywords(value);
                     break;
