@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="horizontal"
+    android:paddingTop="50dp">
+
+    <Space
+        android:layout_width="1dp"
+        android:layout_height="50dp"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txtErrorDisplay"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="" />
+
+
+            <TextView
+                android:id="@+id/txtTitle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Enter Title Below"
+                android:visibility="invisible" />
+
+            <com.fte.feedthecause.EditTextListener
+                android:id="@+id/eTxtTitle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:hint="Title of Post" />
+
+            <TextView
+                android:id="@+id/txtKeyWords"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="List related keywords on picture"
+                android:visibility="invisible" />
+
+            <com.fte.feedthecause.EditTextListener
+                android:id="@+id/eTxtKeyWords"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:hint="Enter Key Words" />
+
+            <TextView
+                android:id="@+id/txtDescription"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Provide a description of your food"
+                android:visibility="invisible" />
+
+            <com.fte.feedthecause.EditTextListener
+                android:id="@+id/eTxtDescription"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:hint="Description" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Entries below are optional"
+                android:gravity="center"
+                android:textStyle="normal|bold" />
+
+
+            <TextView
+                android:id="@+id/txtIngredients"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Provide Ingredients used"
+                android:visibility="invisible" />
+
+            <com.fte.feedthecause.EditTextListener
+                android:id="@+id/eTxtIngredients"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:hint="Ingredients" />
+
+            <TextView
+                android:id="@+id/txtInstructions"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Provide the recipe on how to prepare the food"
+                android:visibility="invisible" />
+
+            <com.fte.feedthecause.EditTextListener
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/eTxtInstructions"
+                android:gravity="center"
+                android:hint="Instructions" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/txtOther"
+                android:text="Enter anything else you would like to share about this food"
+                android:visibility="invisible" />
+
+            <com.fte.feedthecause.EditTextListener
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/ETxtOther"
+                android:hint="Anything else?"
+                android:gravity="center"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <Button
+                    android:id="@+id/btnCPost"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="51dp"
+                    android:layout_marginStart="51dp"
+                    android:text="Cancel" />
+
+                <Button
+                    android:id="@+id/btnPost"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginEnd="59dp"
+                    android:layout_marginRight="59dp"
+                    android:text="Post" />
+
+
+            </RelativeLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

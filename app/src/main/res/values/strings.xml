@@ -1,0 +1,38 @@
+<resources>
+    <string name="app_name">Feed The Cause</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password (optional)</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+    <string name="title_activity_image_form">ImageForm</string>
+    <string name="title_activity_image_form3">ImageForm3</string>
+    <string name="title_activity_image_viewer2">ImageViewer2</string>
+    <string name="title_activity_image_form4">ImageForm4</string>
+    <string name="title_activity_imge_capture2">ImgeCapture2</string>
+
+    <!-- Strings for Google Cloud API -->
+
+    <string name="action_settings">Settings</string>
+    <string name="image_details_header">Details:</string>
+    <string name="image_preview_header">Preview:</string>
+    <string name="loading_message">Uploading image. Please wait.</string>
+
+    <string name="dialog_select_prompt">Choose a picture</string>
+    <string name="dialog_select_camera">Camera</string>
+    <string name="dialog_select_gallery">Gallery</string>
+
+    <string name="image_picker_error">Something is wrong with that image. Pick a different one please.</string>
+    <string name="title_activity_feed_act2">FeedAct2</string>
+    <string name="title_activity_login2">LoginActivity2</string>
+    <string name="title_activity_register_user">RegisterUser</string>
+
+</resources>

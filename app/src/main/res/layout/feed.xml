@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1"
+    app:layout_scrollFlags="scroll">
+
+    <SearchView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:text="Sign Out"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnSignOut" />
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="470dp"
+        android:layout_weight="0.87">
+
+        <ImageView
+            android:layout_width="188dp"
+            android:layout_height="225dp"
+            app:srcCompat="@android:drawable/presence_away"
+            android:id="@+id/imageView"
+            android:scaleType="fitStart"
+            android:layout_row="1"
+            android:layout_column="0" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="176dp"
+            android:inputType="textShortMessage"
+            android:text="This is place holder text for where the description"
+            android:ems="10"
+            android:id="@+id/editText"
+            android:layout_weight="0.70"
+            android:layout_row="2"
+            android:layout_column="0"
+            android:singleLine="false" />
+    </GridLayout>
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:text="Feed"
+            android:layout_width="67dp"
+            android:layout_height="wrap_content"
+            style="@style/Widget.AppCompat.Button"
+            android:layout_row="45"
+            android:layout_column="0" />
+
+        <Button
+            android:text="Liked"
+            android:layout_width="103dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/button3" />
+
+        <Button
+            android:text="Post"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnPost" />
+
+        <Button
+            android:text="Friends"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:id="@+id/button7" />
+
+        <Button
+            android:text="Profile"
+            android:layout_width="100dp"
+            android:layout_height="50dp" />
+
+    </GridLayout>
+
+</LinearLayout>
