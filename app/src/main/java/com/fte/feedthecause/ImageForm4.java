@@ -72,7 +72,7 @@ public class ImageForm4 extends AppCompatActivity {
     private Bitmap picture;
     private byte[] bArray4Blob;
 
-    //final private String strUrl = "foodappinstance.cxdmekncyujj.us-west-2.rds.amazonaws.com:5432";
+    //final private String strUrl = "foodappinstance.cxdmekncyujj.us-west-fbfb2.rds.amazonaws.com:5432";
     //final private String strUrl = "ftp://ftp.gear.host/php/allpics.php";
     final private String strUrl = "http://food1.gear.host/php/allpics.php";
 
