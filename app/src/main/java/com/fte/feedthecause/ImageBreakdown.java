@@ -170,7 +170,7 @@ public class ImageBreakdown extends ImageView{
 
     public void setForBitmap(String forBitmap) {
         this.forBitmap = forBitmap;
-        byte[] newImageBytes = forBitmap.getBytes();
+
     }
 
     public String getPhotoID() {

@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.GridView;
+import android.widget.ImageView;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -39,16 +40,16 @@ public class FeedAct2 extends AppCompatActivity {
             }
         }).start();
 
-
+/*
         gridView = (GridView)findViewById(R.id.gridview);
         photoAdapter = new PhotoAdapter(this, mThumbIds);
         gridView.setAdapter(photoAdapter);
-
+*/
     }
 
 
 
-    //private void getJSON(String url) {
+
         class GetJSON extends AsyncTask<String, Void, String>{
             ProgressDialog loading;
 
@@ -106,25 +107,27 @@ public class FeedAct2 extends AppCompatActivity {
             @Override
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
-                ArrayList<ImageBreakdown> holder = new ArrayList<>();
+                //ArrayList<ImageBreakdown> holder = new ArrayList<>();
                 parseJSONString(s);
-               /*
-                try {
-                    JSONArray junky = new JSONArray(s);
 
-                    for(int i=0 ; i< junky.length(); i++){   // iterate through jsonArray
-                        JSONObject jsonObject = junky.getJSONObject(i);  // get jsonObject @ i position
-                        System.out.println("jsonObject " + i + ": " + jsonObject);
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }*/
+                ImageView here = (ImageView) findViewById(R.id.imgLook);
+                /*
+                String base =imageHolder.get(8).getForBitmap();
+                base = base.replaceAll("\\\\","");
+                String base2 = "";
+
+                byte[] decodedString = Base64.decode(imageHolder.get(7).getForBitmap(), Base64.DEFAULT);
+                Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
 
 
+                byte[] imageAsBytes = Base64.decode(base.getBytes(), Base64.DEFAULT);
+                Bitmap bmp = BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length);
+
+                here.setImageBitmap(bmp);*/
             }
         }
 
-    //}
+
 
 
 
@@ -185,9 +188,7 @@ public class FeedAct2 extends AppCompatActivity {
                 case "other":
                     me.setOther(value);
                     break;
-                case "\"date_created\"":
                 case "date_created":
-
                     me.setTimePosted(value);
                     break;
                 case "owner":

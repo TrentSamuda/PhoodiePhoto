@@ -62,6 +62,7 @@ public class RegisterUser extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -69,6 +70,9 @@ public class RegisterUser extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+        
+        fab.setVisibility(View.INVISIBLE);
+        fab.setEnabled(false);
 
         fName = (EditText) findViewById(R.id.eTxtFName);
         lName = (EditText) findViewById(R.id.eTxtLName);
@@ -119,32 +123,44 @@ public class RegisterUser extends AppCompatActivity {
         String errorMessage = "";
         if(fName.getText().toString().trim().equals("")){
             safe = false;
-            errorMessage += "Enter a first name\n";
+            errorMessage += "Enter a first name.\n";
         }else{
             _fName = fName.getText().toString();
         }
 
         if(lName.getText().toString().trim().equals("")){
             safe = false;
+            errorMessage += "Enter a last name.\n";
         }else{
             _lName = lName.getText().toString();
         }
         if(!isEmail(email.getText().toString().trim())){
+            errorMessage += "Enter a valid email address.\n";
             safe = false;
         }else{
             _email = email.getText().toString();
         }
         if(username.getText().toString().trim().equals("")){
             safe = false;
+            errorMessage += "Enter a username\n";
         }else{
-            _username = username.getText().toString();
+            if(username.getText().toString().length() < 5){
+                safe = false;
+                errorMessage += "Enter a username of at least 5 characters\n";
+            }else if(username.getText().toString().contains(" ")){
+                safe = false;
+                errorMessage += "Enter a username without any spaces\n";
+            }else
+                _username = username.getText().toString();
         }
         if(!checkPasswords()){
             safe = false;
         }else{
             _password = password.getText().toString();
         }
-
+        if(!safe)
+            Toast.makeText(getApplicationContext(), errorMessage,
+                    Toast.LENGTH_LONG).show();
         return safe;
     }
 
@@ -152,10 +168,18 @@ public class RegisterUser extends AppCompatActivity {
         //check the passwords to equal each other
         //make sure they arent empty
         //make sure at least 5 in length
-        if(5==5)
-        return true;
-        else
-            return false;
+        if (password.getText().toString().equals(cPassword.getText().toString()) ){
+            if (password.getText().toString().length() >= 7) {
+                return true;
+            }else{
+                Toast.makeText(getApplicationContext(), "Please enter a password with at least 7 length.",
+                        Toast.LENGTH_LONG).show();
+            }
+        }else{
+            Toast.makeText(getApplicationContext(), "Please make sure passwords matches.",
+                    Toast.LENGTH_LONG).show();
+        }
+        return false;
     }
 
     private boolean isEmail(String tEmail){

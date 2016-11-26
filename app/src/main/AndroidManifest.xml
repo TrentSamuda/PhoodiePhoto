@@ -56,6 +56,10 @@
         <activity
             android:name=".RegisterUser"
             android:label="@string/title_activity_register_user"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ImageTester"
+            android:label="@string/title_activity_image_tester"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

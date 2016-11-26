@@ -44,7 +44,7 @@
                 android:id="@+id/txtKeyWords"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="List related keywords on picture"
+                android:text="Enter keywords related to "
                 android:visibility="invisible" />
 
             <com.fte.feedthecause.EditTextListener

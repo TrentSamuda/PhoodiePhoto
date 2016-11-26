@@ -33,7 +33,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.Set;
@@ -134,8 +133,8 @@ public class ImageForm4 extends AppCompatActivity {
         //_keywords = temp;
         txtKeywords.setText(_keywords);
 
-        //_picture = uriToBitmapString();
-        bArray4Blob = uriToBitmapToBlob();
+        _picture = uriToBitmapString();
+        //bArray4Blob = uriToBitmapToBlob();
         //Thread tCloud = new Thread(new UseCloudVision());
         //tCloud.start();
 
@@ -184,7 +183,7 @@ public class ImageForm4 extends AppCompatActivity {
             parcelFileDescriptor.close();
 
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            bb.compress(Bitmap.CompressFormat.PNG, 100, bos);
+            bb.compress(Bitmap.CompressFormat.JPEG, 100, bos);
             return bos.toByteArray();
 
         } catch (IOException e) {
@@ -198,19 +197,65 @@ public class ImageForm4 extends AppCompatActivity {
 
     }
 
+    /*
     public static String BitmapToString(Bitmap bitmap) {
+        String temp=null;
         try {
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-            byte[] b = baos.toByteArray();
-            String temp = Base64.encodeToString(b, Base64.DEFAULT);
-            return temp;
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            bitmap=Bitmap.createScaledBitmap(bitmap, 100, 100, true);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos);
+            byte[] data = bos.toByteArray();
+            String file = Base64.encodeToString(data, 0);
+            //String image_file = file;
+            return file;
         } catch (NullPointerException e) {
             return null;
         } catch (OutOfMemoryError e) {
+            Log.e("OutOfMemory", e.toString());
             return null;
         }
+
+        return temp;
     }
+    */
+
+    public String BitmapToString(Bitmap bitmap) {
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+
+        byte[] b = baos.toByteArray();
+
+        String temp = null;
+
+        try {
+
+            System.gc();
+
+            temp = Base64.encodeToString(b, Base64.DEFAULT);
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+
+        } catch (OutOfMemoryError e) {
+
+            baos = new ByteArrayOutputStream();
+
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 50, baos);
+            b = baos.toByteArray();
+
+            temp = Base64.encodeToString(b, Base64.DEFAULT);
+            //temp = "it went to catch";
+
+            Log.e("EWN", "Out of memory error catched");
+
+        }
+
+        return temp;
+    }
+
 
     public static void dumpIntent(Intent i){
 
@@ -259,12 +304,9 @@ public class ImageForm4 extends AppCompatActivity {
                 }
             }).start();
         }
-        //postPostGRESQL();
+
         else{
-            /*
-            txtErrMessage.setVisibility(View.VISIBLE);
-            txtErrMessage.setText(errMessage);
-            */
+
             Toast.makeText(getContext4Cloud(), errMessage,
                     Toast.LENGTH_LONG).show();
             errMessage = "Please do the following.\n";
@@ -320,7 +362,7 @@ public class ImageForm4 extends AppCompatActivity {
                 postDataParams.put("date_created", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
                 postDataParams.put("owner", new Controller().getUserId());
                 String forBArray =  String.valueOf(bArray4Blob);
-                postDataParams.put("image_path", forBArray);
+                postDataParams.put("image_path", _picture);
 
 
 
@@ -394,8 +436,7 @@ public class ImageForm4 extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), result,
                     Toast.LENGTH_LONG).show();
 
-            Toast.makeText(getContext4Cloud(),  testBConversion()+" result of conversion",
-                    Toast.LENGTH_LONG).show();
+
 
             if(result.equals("New record created successfully"))
                 finish();
@@ -445,17 +486,7 @@ public class ImageForm4 extends AppCompatActivity {
         }
     }
 
-    private boolean testBConversion(){
-        String converted = String.valueOf(bArray4Blob);
-        byte[] newImageBytes = converted.getBytes();
 
-        if(newImageBytes.length == bArray4Blob.length){
-           return Arrays.equals(newImageBytes, bArray4Blob);
-        }
-        else
-            return false;
-
-    }
 
 
 
