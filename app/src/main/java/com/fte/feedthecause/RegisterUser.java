@@ -164,6 +164,7 @@ public class RegisterUser extends AppCompatActivity {
         return safe;
     }
 
+    //checking passwords
     private boolean checkPasswords(){
         //check the passwords to equal each other
         //make sure they arent empty
@@ -182,6 +183,7 @@ public class RegisterUser extends AppCompatActivity {
         return false;
     }
 
+    //check emails
     private boolean isEmail(String tEmail){
         return  (tEmail.contains("@") ) && (tEmail.substring(tEmail.indexOf("@")).length() > 2) && (tEmail.indexOf("@") > 2);
         /*if(tEmail.contains("@") ){

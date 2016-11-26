@@ -108,7 +108,7 @@ public class FeedAct2 extends AppCompatActivity {
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
                 //ArrayList<ImageBreakdown> holder = new ArrayList<>();
-                parseJSONString(s);
+                parseJSONString(s);//where the parsing is being done
 
                 ImageView here = (ImageView) findViewById(R.id.imgLook);
                 /*

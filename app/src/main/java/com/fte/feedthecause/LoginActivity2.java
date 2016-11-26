@@ -30,6 +30,8 @@ import java.util.Iterator;
 
 import javax.net.ssl.HttpsURLConnection;
 
+
+//using to login
 public class LoginActivity2 extends AppCompatActivity {
 
     EditText

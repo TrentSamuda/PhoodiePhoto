@@ -10,6 +10,8 @@ import android.widget.ImageView;
  * Created by trenton on 11/1/16.
  */
 
+//this may handle each individual image
+
 public class ImageBreakdown extends ImageView{
 
     private String title;

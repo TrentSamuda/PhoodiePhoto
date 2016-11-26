@@ -8,7 +8,7 @@
 
     <Space
         android:layout_width="1dp"
-        android:layout_height="50dp"/>
+        android:layout_height="51dp"/>
 
     <ScrollView
         android:layout_width="match_parent"
