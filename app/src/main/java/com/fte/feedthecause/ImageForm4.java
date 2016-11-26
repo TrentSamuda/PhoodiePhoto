@@ -219,6 +219,8 @@ public class ImageForm4 extends AppCompatActivity {
     }
     */
 
+
+    //creating the potential image
     public String BitmapToString(Bitmap bitmap) {
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
