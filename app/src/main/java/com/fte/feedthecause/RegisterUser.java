@@ -1,16 +1,24 @@
 package com.fte.feedthecause;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import org.json.JSONException;
@@ -18,6 +26,8 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -26,6 +36,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
 import java.util.Iterator;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -46,13 +57,23 @@ public class RegisterUser extends AppCompatActivity {
             _email,
             _username,
             _password,
-            _cPassword;
+            _cPassword,
+            _picValue;
 
     private Button
             btnCancel,
             btnRegister;
 
     private boolean registerSuccess;
+
+    private static final int GALLERY_IMAGE_REQUEST = 1;
+    public static final int CAMERA_PERMISSIONS_REQUEST = 2;
+    public static final int CAMERA_IMAGE_REQUEST = 3;
+
+    public static final String FILE_NAME = "temp.jpg";
+
+    private Bitmap bp = null;
+    private ImageView imgProfile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +105,8 @@ public class RegisterUser extends AppCompatActivity {
         btnCancel = (Button) findViewById(R.id.btnCregister);
         btnRegister = (Button) findViewById(R.id.btnRegister);
 
+        imgProfile = (ImageView) findViewById(R.id.imgRegPic);
+
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -97,6 +120,131 @@ public class RegisterUser extends AppCompatActivity {
                 attemptRegiser();
             }
         });
+
+
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(RegisterUser.this);
+        builder
+                //.setMessage(R.string.dialog_select_prompt)
+                .setMessage("Take profile picture?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        startCamera();
+                    }
+                })
+                .setNegativeButton("no", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //startCamera();
+                    }
+                });
+        builder.create().show();
+
+    }
+
+
+    public void startCamera() {
+      /*  if (PermissionUtils.requestPermission(
+                this,
+                CAMERA_PERMISSIONS_REQUEST,
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.CAMERA)) {*/
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(getCameraFile()));
+        startActivityForResult(intent, CAMERA_IMAGE_REQUEST);
+        //}
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == GALLERY_IMAGE_REQUEST && resultCode == RESULT_OK && data != null) {
+            //uploadImage(data.getData());
+        } else if (requestCode == CAMERA_IMAGE_REQUEST && resultCode == RESULT_OK) {
+            try {
+                bp = setImage(Uri.fromFile(getCameraFile()));
+                imgProfile.setImageBitmap(bp);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        else{
+            startCamera();
+        }
+        /*
+        try {
+            StartForm();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        */
+    }
+
+    private Bitmap setImage(Uri uri) throws IOException {
+        return scaleBitmapDown(
+                MediaStore.Images.Media.getBitmap(getContentResolver(), uri),
+                1200);
+    }
+    public Bitmap scaleBitmapDown(Bitmap bitmap, int maxDimension) {
+
+        int originalWidth = bitmap.getWidth();
+        int originalHeight = bitmap.getHeight();
+        int resizedWidth = maxDimension;
+        int resizedHeight = maxDimension;
+
+        if (originalHeight > originalWidth) {
+            resizedHeight = maxDimension;
+            resizedWidth = (int) (resizedHeight * (float) originalWidth / (float) originalHeight);
+        } else if (originalWidth > originalHeight) {
+            resizedWidth = maxDimension;
+            resizedHeight = (int) (resizedWidth * (float) originalHeight / (float) originalWidth);
+        } else if (originalHeight == originalWidth) {
+            resizedHeight = maxDimension;
+            resizedWidth = maxDimension;
+        }
+        return Bitmap.createScaledBitmap(bitmap, resizedWidth, resizedHeight, false);
+    }
+
+    public File getCameraFile() {
+        File dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+        return new File(dir, FILE_NAME);
+    }
+    public String BitmapToString(Bitmap bitmap) {
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+
+        byte[] b = baos.toByteArray();
+
+        String temp = null;
+
+        try {
+
+            System.gc();
+
+            temp = Base64.encodeToString(b, Base64.DEFAULT);
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+
+        } catch (OutOfMemoryError e) {
+
+            baos = new ByteArrayOutputStream();
+
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 50, baos);
+            b = baos.toByteArray();
+
+            temp = Base64.encodeToString(b, Base64.DEFAULT);
+            //temp = "it went to catch";
+
+            Log.e("EWN", "Out of memory error catched");
+
+        }
+
+        return temp;
     }
 
     private void attemptRegiser() {
@@ -217,7 +365,12 @@ public class RegisterUser extends AppCompatActivity {
                 postRegisterInParams.put("password", new Encrypt(_password).toString());
                 postRegisterInParams.put("fname", _fName);
                 postRegisterInParams.put("lname", _lName);
+                postRegisterInParams.put("date_created", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
 
+                if(bp != null) {
+                    _picValue = BitmapToString(bp);
+                    postRegisterInParams.put("image_path", _picValue);
+                }
 
                 // connection is the communications link between the
                 // application and a URL that we will read from.

@@ -46,10 +46,10 @@
             android:id="@+id/btnGetFeed"/>
 
         <Button
-            android:text="Liked"
+            android:text="Profile"
             android:layout_width="103dp"
             android:layout_height="wrap_content"
-            android:id="@+id/button3" />
+            android:id="@+id/btnProfile" />
 
         <Button
             android:text="Post"
@@ -63,10 +63,6 @@
             android:layout_height="50dp"
             android:id="@+id/button7" />
 
-        <Button
-            android:text="Profile"
-            android:layout_width="100dp"
-            android:layout_height="50dp" />
 
     </GridLayout>
 

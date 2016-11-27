@@ -1,5 +1,6 @@
 package com.fte.feedthecause;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -8,6 +9,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -70,7 +72,26 @@ public class ImageViewer2 extends AppCompatActivity {
 
 
         if(savedInstanceState == null) {
-            startCamera();
+            //startCamera();
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(ImageViewer2.this);
+            builder
+                    .setMessage(R.string.dialog_select_prompt)
+                    .setPositiveButton(R.string.dialog_select_gallery, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            startGalleryChooser();
+                        }
+                    })
+                    .setNegativeButton(R.string.dialog_select_camera, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            startCamera();
+                        }
+                    });
+            builder.create().show();
+
+
 
         }
 
@@ -94,6 +115,14 @@ public class ImageViewer2 extends AppCompatActivity {
         startActivityForResult(intent, CAMERA_IMAGE_REQUEST);
         //}
     }
+    public void startGalleryChooser() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select a photo"),
+                GALLERY_IMAGE_REQUEST);
+    }
+
 
     private void StartForm() throws InterruptedException {
         Intent intent = new Intent(ImageViewer2.this, ImageForm4.class);
@@ -140,13 +169,17 @@ public class ImageViewer2 extends AppCompatActivity {
             uploadImage(data.getData());
         } else if (requestCode == CAMERA_IMAGE_REQUEST && resultCode == RESULT_OK) {
             uploadImage(Uri.fromFile(getCameraFile()));
-
         }
+        else{
+            startCamera();
+        }
+        /*
         try {
             StartForm();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        */
     }
 
     public void uploadImage(Uri uri) {

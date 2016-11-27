@@ -74,7 +74,7 @@ public class ImageForm4 extends AppCompatActivity {
 
     //final private String strUrl = "foodappinstance.cxdmekncyujj.us-west-fbfb2.rds.amazonaws.com:5432";
     //final private String strUrl = "ftp://ftp.gear.host/php/allpics.php";
-    final private String strUrl = "http://food1.gear.host/php/allpics.php";
+    final private String strUrl = "http://food1.gear.host/php/newpics.php";
 
 
     String currentDateTime = getCurrentTimeStamp(); // Find todays date

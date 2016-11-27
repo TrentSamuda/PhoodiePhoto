@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
-import android.widget.ImageView;
 
 /**
  * Created by trenton on 11/1/16.
@@ -12,7 +11,7 @@ import android.widget.ImageView;
 
 //this may handle each individual image
 
-public class ImageBreakdown extends ImageView{
+public class ImageBreakdown {//extends ImageView{
 
     private String title;
     private String description;
@@ -32,11 +31,11 @@ public class ImageBreakdown extends ImageView{
     private int likeCounter;
 
 
-    public ImageBreakdown(Context context, String _title, String _keywords, String _description,
+    public ImageBreakdown(/*Context context,*/ String _title, String _keywords, String _description,
                           String _ingredients, String _instructions, String _other,
                           String _picture, String _owner, String _timePosted,
                           String _photoID, String _forBitmap, int _likeCounter){
-        super(context);
+        //super(context);
         title = _title;
         keywords = _keywords;
         description = _description;
@@ -44,7 +43,7 @@ public class ImageBreakdown extends ImageView{
         instructions = _ingredients;
         other = _other;
         bp = stringToBitMap(_picture);
-        this.setImageBitmap(bp);
+        //this.setImageBitmap(bp);
         owner = _owner;
         timePosted = _timePosted;
         photoID = _photoID;
@@ -54,7 +53,7 @@ public class ImageBreakdown extends ImageView{
     }
 
     public ImageBreakdown(Context context){
-        super(context);
+        //super(context);
         title = "";
         keywords = "";
         description = "";
@@ -67,10 +66,10 @@ public class ImageBreakdown extends ImageView{
         timePosted = "";
     }
 
-    public ImageBreakdown(Context context, String picVal){
-        this(context);
+    public ImageBreakdown(/*Context context, */String picVal){
+        //this(context);
         picture = picVal;
-        this.setImageBitmap(stringToBitMap(picture));
+        //this.setImageBitmap(stringToBitMap(picture));
 
     }
 

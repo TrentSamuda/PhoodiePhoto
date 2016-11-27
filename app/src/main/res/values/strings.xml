@@ -35,5 +35,6 @@
     <string name="title_activity_login2">LoginActivity2</string>
     <string name="title_activity_register_user">RegisterUser</string>
     <string name="title_activity_image_tester">ImageTester</string>
+    <string name="title_activity_own_profile">OwnProfile</string>
 
 </resources>

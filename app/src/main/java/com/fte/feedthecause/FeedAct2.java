@@ -139,6 +139,7 @@ public class FeedAct2 extends AppCompatActivity {
         jString = jString.replaceAll("\\}","");
         jString = jString.replaceAll("\"","");
         jString = jString.replaceAll("result","");
+        jString = jString.replaceAll("\\\\","");
         int chop = jString.indexOf(":");
         jString= jString.substring(chop+1);
 

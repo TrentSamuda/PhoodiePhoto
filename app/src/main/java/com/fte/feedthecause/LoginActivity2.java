@@ -143,7 +143,7 @@ public class LoginActivity2 extends AppCompatActivity {
                 URL url = new URL(urlstr);
                 JSONObject postSignInParams = new JSONObject();
                 postSignInParams.put("username", sUsername);
-                postSignInParams.put("password", sPassword);
+                postSignInParams.put("password", new Encrypt(sPassword).toString());
 
                 // connection is the communications link between the
                 // application and a URL that we will read from.

@@ -17,6 +17,7 @@ public class FeedACT extends AppCompatActivity {
     Button btnPost;
     Button btnSignOut;
     Button btnFeed;
+    Button btnProfile;
     Spinner items;
 
     @Override
@@ -55,6 +56,7 @@ public class FeedACT extends AppCompatActivity {
         btnPost = (Button)findViewById(R.id.btnPost);
         btnSignOut = (Button)findViewById(R.id.btnSignOut);
         btnFeed = (Button)findViewById(R.id.btnGetFeed);
+        btnProfile = (Button)findViewById(R.id.btnProfile);
 
         btnPost.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,6 +79,16 @@ public class FeedACT extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(FeedACT.this, FeedAct2.class);
+                //finish();
+                startActivity(intent);
+
+            }
+        });
+
+        btnProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(FeedACT.this, OwnProfile.class);
                 //finish();
                 startActivity(intent);
 
