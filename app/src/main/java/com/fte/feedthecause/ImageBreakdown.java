@@ -1,6 +1,5 @@
 package com.fte.feedthecause;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
@@ -19,7 +18,7 @@ public class ImageBreakdown {//extends ImageView{
     private String ingredients;
     private String instructions;
     private String other;
-    private String picture;
+    private String imageURL;
     private String owner;
     private String timePosted;
     private String photoID;
@@ -52,7 +51,7 @@ public class ImageBreakdown {//extends ImageView{
 
     }
 
-    public ImageBreakdown(Context context){
+    public ImageBreakdown(){
         //super(context);
         title = "";
         keywords = "";
@@ -64,12 +63,13 @@ public class ImageBreakdown {//extends ImageView{
 
         owner = "";
         timePosted = "";
+        likeCounter=0;
     }
 
     public ImageBreakdown(/*Context context, */String picVal){
         //this(context);
-        picture = picVal;
-        //this.setImageBitmap(stringToBitMap(picture));
+        imageURL = picVal;
+        //this.setImageBitmap(stringToBitMap(imageURL));
 
     }
 
@@ -98,7 +98,7 @@ public class ImageBreakdown {//extends ImageView{
     }
 
     public void setKeywords(String keywords) {
-        this.keywords = keywords;
+        this.keywords = keywords.replaceAll("@",",");
     }
 
     public String getDescription() {
@@ -157,12 +157,12 @@ public class ImageBreakdown {//extends ImageView{
         this.timePosted = timePosted;
     }
 
-    public String getPicture() {
-        return picture;
+    public String getImageURL() {
+        return imageURL;
     }
 
-    public void setPicture(String picture) {
-        this.picture = picture;
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL.replace("www.","http://") ;
     }
 
     public String getForBitmap() {
@@ -189,4 +189,8 @@ public class ImageBreakdown {//extends ImageView{
     public void setLikeCounter(int likeCounter) {
         this.likeCounter = likeCounter;
     }
+
+
+
+
 }

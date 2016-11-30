@@ -1,32 +1,75 @@
 package com.fte.feedthecause;
 
-import android.app.ProgressDialog;
-import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.GridView;
-import android.widget.ImageView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.List;
 
-import javax.net.ssl.HttpsURLConnection;
+@RequiresApi(api = Build.VERSION_CODES.M)
+public class FeedAct2 extends AppCompatActivity implements RecyclerView.OnScrollChangeListener {
 
-public class FeedAct2 extends AppCompatActivity {
 
-    private GridView gridView;
-    private PhotoAdapter photoAdapter;
+    private List<ImageBreakdown> listFoodPics;
 
-    private ArrayList<ImageBreakdown> imageHolder;
+    //Creating Views
+    private RecyclerView recyclerView;
+    private RecyclerView.LayoutManager layoutManager;
+    private RecyclerView.Adapter adapter;
+
+    //Volley Request Queue
+    private RequestQueue requestQueue;
+
+    //The request counter to send ?page=1, ?page=2  requests
+    private int requestCount = 1;
+
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feed_act2);
 
-        imageHolder = new ArrayList<>();
+        //Initializing Views
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        recyclerView.setHasFixedSize(true);
+        layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+
+        listFoodPics = new ArrayList<>();
+        requestQueue = Volley.newRequestQueue(this);
+
+        //Calling method to get data to fetch data
+        getData();
+
+        //Adding an scroll change listener to recyclerview
+        recyclerView.setOnScrollChangeListener(this);
+
+        //initializing our adapter
+        adapter = new CardAdapter(listFoodPics, this);
+
+        //Adding adapter to recyclerview
+        recyclerView.setAdapter(adapter);
+
+
+/*
         new Thread(new Runnable() {
             public void run() {
                 runOnUiThread(new Runnable() {
@@ -39,7 +82,7 @@ public class FeedAct2 extends AppCompatActivity {
                 new GetJSON().execute();
             }
         }).start();
-
+*/
 /*
         gridView = (GridView)findViewById(R.id.gridview);
         photoAdapter = new PhotoAdapter(this, mThumbIds);
@@ -48,8 +91,110 @@ public class FeedAct2 extends AppCompatActivity {
     }
 
 
+    private JsonArrayRequest getDataFromServer(int requestCount) {
+        //Initializing ProgressBar
+        final ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressBar1);
+
+        //Displaying Progressbar
+        progressBar.setVisibility(View.VISIBLE);
+        setProgressBarIndeterminateVisibility(true);
+
+        //JsonArrayRequest of volley
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Config.DATA_URL + String.valueOf(requestCount),
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        //Calling method parseData to parse the json response
+                        parseData(response);
+                        //Hiding the progressbar
+                        progressBar.setVisibility(View.GONE);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        progressBar.setVisibility(View.GONE);
+                        //If an error occurs that means end of the list has reached
+                        Toast.makeText(FeedAct2.this, "No More Items Available", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+        //Returning the request
+        return jsonArrayRequest;
+    }
+
+    //This method will get data from the web api
+    private void getData() {
+        //Adding the method to the queue by calling the method getDataFromServer
+        requestQueue.add(getDataFromServer(requestCount));
+        //Incrementing the request counter
+        requestCount++;
+    }
 
 
+    //This method will parse json data
+    private void parseData(JSONArray array) {
+        for (int i = 0; i < array.length(); i++) {
+            //Creating the superhero object
+            ImageBreakdown foodPic = new ImageBreakdown();
+            JSONObject json = null;
+            try {
+                //Getting json
+                json = array.getJSONObject(i);
+
+                //Adding data to the superhero object
+                //superHero.setImageUrl(json.getString(Config.TAG_IMAGE_URL));
+                foodPic.setTitle(json.getString(Config.TAG_TITLE));
+                foodPic.setDescription(json.getString(Config.TAG_DESCRIPTION));
+                foodPic.setKeywords(json.getString(Config.TAG_KEYWORDS));
+                foodPic.setIngredients(json.getString(Config.TAG_INGREDIENTS));
+                foodPic.setInstructions(json.getString(Config.TAG_INSTRUCTIONS));
+                foodPic.setOther(json.getString(Config.TAG_OTHER));
+                foodPic.setTimePosted(json.getString(Config.TAG_DATE_CREATED));
+                foodPic.setOwner(json.getString(Config.TAG_OWNER));
+                foodPic.setImageURL(json.getString(Config.TAG_IMAGE_URL));
+                foodPic.setLikeCounter(Integer.parseInt(json.getString(Config.TAG_LIKE_COUNTER)));
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            //Adding the ImageBreakdown object to the list
+            listFoodPics.add(foodPic);
+        }
+
+        //Notifying the adapter that data has been added or changed
+        adapter.notifyDataSetChanged();
+    }
+
+
+    //This method would check that the recyclerview scroll has reached the bottom or not
+    private boolean isLastItemDisplaying(RecyclerView recyclerView) {
+        if (recyclerView.getAdapter().getItemCount() != 0) {
+            int lastVisibleItemPosition = ((LinearLayoutManager) recyclerView.getLayoutManager()).findLastCompletelyVisibleItemPosition();
+            if (lastVisibleItemPosition != RecyclerView.NO_POSITION && lastVisibleItemPosition == recyclerView.getAdapter().getItemCount() - 1)
+                return true;
+        }
+        return false;
+    }
+
+    //Overriden method to detect scrolling
+    @Override
+    public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+        //Ifscrolled at last then
+        if (isLastItemDisplaying(recyclerView)) {
+            //Calling the method getdata again
+            getData();
+        }
+    }
+
+
+
+
+
+
+
+
+/*
         class GetJSON extends AsyncTask<String, Void, String>{
             ProgressDialog loading;
 
@@ -124,14 +269,15 @@ public class FeedAct2 extends AppCompatActivity {
                 Bitmap bmp = BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length);
 
                 here.setImageBitmap(bmp);*/
+    /*
             }
         }
+*/
 
 
 
 
-
-
+/*
     public void parseJSONString(String jString){
         jString = jString.replaceAll("\\[","");
         jString = jString.replaceAll("\\]","");
@@ -166,7 +312,7 @@ public class FeedAct2 extends AppCompatActivity {
             }
 
             if(key.equals("photo_id")) {
-               me = new ImageBreakdown(getApplicationContext());
+               //me = new ImageBreakdown(getApplicationContext());
             }
             switch(key){
                 case "title":
@@ -206,50 +352,14 @@ public class FeedAct2 extends AppCompatActivity {
                     break;
             }
             if(key.equals("likes"))
-                imageHolder.add(me);
+                //imageHolder.add(me);
         }
 
     }
+*/
 
 
 
-    private Integer[] mThumbIds = {
-            R.drawable.sample_2, R.drawable.sample_3,
-            R.drawable.sample_4, R.drawable.sample_5,
-            R.drawable.sample_6, R.drawable.sample_7,
-            R.drawable.sample_0, R.drawable.sample_1,
-            R.drawable.sample_2, R.drawable.sample_3,
-            R.drawable.sample_4, R.drawable.sample_5,
-            R.drawable.sample_6, R.drawable.sample_7,
-            R.drawable.sample_0, R.drawable.sample_1,
-            R.drawable.sample_2, R.drawable.sample_3,
-            R.drawable.sample_4, R.drawable.sample_5,
-            R.drawable.sample_6, R.drawable.sample_7
-    };
 
-    /*
-    private [] books = {
-            new Book(R.string.abc_an_amazing_alphabet_book, R.string.dr_seuss, R.drawable.abc,
-                    "http://www.raywenderlich.com/wp-content/uploads/2016/03/abc.jpg"),
-            new Book(R.string.are_you_my_mother, R.string.dr_seuss, R.drawable.areyoumymother,
-                    "http://www.raywenderlich.com/wp-content/uploads/2016/03/areyoumymother.jpg"),
-            new Book(R.string.where_is_babys_belly_button, R.string.karen_katz, R.drawable.whereisbabysbellybutton,
-                    "http://www.raywenderlich.com/wp-content/uploads/2016/03/whereisbabysbellybutton.jpg"),
-            new Book(R.string.on_the_night_you_were_born, R.string.nancy_tillman, R.drawable.onthenightyouwereborn,
-                    "http://www.raywenderlich.com/wp-content/uploads/2016/03/onthenightyouwereborn.jpg"),
-            new Book(R.string.hand_hand_fingers_thumb, R.string.dr_seuss, R.drawable.handhandfingersthumb,
-                    "http://www.raywenderlich.com/wp-content/uploads/2016/03/handhandfingersthumb.jpg"),
-            new Book(R.string.the_very_hungry_caterpillar, R.string.eric_carle, R.drawable.theveryhungrycaterpillar,
-                    "http://www.raywenderlich.com/wp-content/uploads/2016/03/theveryhungrycaterpillar.jpg"),
-            new Book(R.string.the_going_to_bed_book, R.string.sandra_boynton, R.drawable.thegoingtobedbook,
-                    "http://www.raywenderlich.com/wp-content/uploads/2016/03/thegoingtobedbook.jpg"),
-            new Book(R.string.oh_baby_go_baby, R.string.dr_seuss, R.drawable.ohbabygobaby,
-                    "http://www.raywenderlich.com/wp-content/uploads/2016/03/ohbabygobaby.jpg"),
-            new Book(R.string.the_tooth_book, R.string.dr_seuss, R.drawable.thetoothbook,
-                    "http://www.raywenderlich.com/wp-content/uploads/2016/03/thetoothbook.jpg"),
-            new Book(R.string.one_fish_two_fish_red_fish_blue_fish, R.string.dr_seuss, R.drawable.onefish,
-                    "http://www.raywenderlich.com/wp-content/uploads/2016/03/onefish.jpg")
-    };
-    */
 
 }

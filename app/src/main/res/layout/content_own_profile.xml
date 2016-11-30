@@ -33,7 +33,7 @@
 
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="54dp"
+                android:layout_height="wrap_content"
                 app:srcCompat="@android:color/darker_gray"
                 android:id="@+id/imgOwnProfile" />
 
@@ -61,12 +61,14 @@
                     android:id="@+id/txtPEmail"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-
-
                     android:text="Email:"
                     android:gravity="center"/>
 
-
+            <Button
+                android:text="Logout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/btnLogout" />
 
 
         </LinearLayout>

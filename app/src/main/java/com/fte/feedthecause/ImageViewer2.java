@@ -173,13 +173,13 @@ public class ImageViewer2 extends AppCompatActivity {
         else{
             startCamera();
         }
-        /*
+
         try {
             StartForm();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        */
+
     }
 
     public void uploadImage(Uri uri) {
